@@ -11,9 +11,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class DoctrineBehaviorsExtension extends Extension
 {
-    /**
-     * @inheritDoc
-     */
     public function load(array $configs, ContainerBuilder $containerBuilder): void
     {
         $phpFileLoader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__ . '/../../../config'));
