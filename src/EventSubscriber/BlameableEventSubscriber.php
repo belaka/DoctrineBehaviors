@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Knp\DoctrineBehaviors\EventSubscriber;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
@@ -17,8 +16,13 @@ use Doctrine\ORM\UnitOfWork;
 use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
 use Knp\DoctrineBehaviors\Contract\Provider\UserProviderInterface;
 
-final class BlameableEventSubscriber implements EventSubscriberInterface
+#[AsDoctrineListener(Events::prePersist)]
+#[AsDoctrineListener(Events::preUpdate)]
+#[AsDoctrineListener(Events::preRemove)]
+#[AsDoctrineListener(Events::loadClassMetadata)]
+final class BlameableEventSubscriber
 {
+
     /**
      * @var string
      */
@@ -46,6 +50,7 @@ final class BlameableEventSubscriber implements EventSubscriberInterface
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
     {
+        /** @var ClassMetadataInfo $classMetadata */
         $classMetadata = $loadClassMetadataEventArgs->getClassMetadata();
         if ($classMetadata->reflClass === null) {
             // Class has not yet been fully built, ignore this event
@@ -134,13 +139,7 @@ final class BlameableEventSubscriber implements EventSubscriberInterface
             ->propertyChanged($entity, self::DELETED_BY, $oldDeletedBy, $user);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [Events::prePersist, Events::preUpdate, Events::preRemove, Events::loadClassMetadata];
-    }
+    
 
     private function mapEntity(ClassMetadataInfo $classMetadataInfo): void
     {

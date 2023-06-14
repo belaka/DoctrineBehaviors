@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Knp\DoctrineBehaviors\EventSubscriber;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
 
-final class SoftDeletableEventSubscriber implements EventSubscriberInterface
+#[AsDoctrineListener(Events::onFlush)]
+#[AsDoctrineListener(Events::loadClassMetadata)]
+final class SoftDeletableEventSubscriber
 {
     /**
      * @var string
@@ -19,7 +24,8 @@ final class SoftDeletableEventSubscriber implements EventSubscriberInterface
 
     public function onFlush(OnFlushEventArgs $onFlushEventArgs): void
     {
-        $entityManager = $onFlushEventArgs->getEntityManager();
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $onFlushEventArgs->getObjectManager();
         $unitOfWork = $entityManager->getUnitOfWork();
 
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
@@ -41,6 +47,7 @@ final class SoftDeletableEventSubscriber implements EventSubscriberInterface
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
     {
+        /** @var ClassMetadataInfo $classMetadata */
         $classMetadata = $loadClassMetadataEventArgs->getClassMetadata();
         if ($classMetadata->reflClass === null) {
             // Class has not yet been fully built, ignore this event
@@ -60,13 +67,5 @@ final class SoftDeletableEventSubscriber implements EventSubscriberInterface
             'type' => 'datetime',
             'nullable' => true,
         ]);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [Events::onFlush, Events::loadClassMetadata];
     }
 }
