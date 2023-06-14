@@ -16,10 +16,10 @@ use Doctrine\ORM\UnitOfWork;
 use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
 use Knp\DoctrineBehaviors\Contract\Provider\UserProviderInterface;
 
-#[AsDoctrineListener(Events::prePersist)]
-#[AsDoctrineListener(Events::preUpdate)]
-#[AsDoctrineListener(Events::preRemove)]
-#[AsDoctrineListener(Events::loadClassMetadata)]
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::preUpdate)]
+#[AsDoctrineListener(event: Events::preRemove)]
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
 final class BlameableEventSubscriber
 {
     /**

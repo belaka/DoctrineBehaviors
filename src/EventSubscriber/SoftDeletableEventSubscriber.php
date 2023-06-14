@@ -12,8 +12,8 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Knp\DoctrineBehaviors\Contract\Entity\SoftDeletableInterface;
 
-#[AsDoctrineListener(Events::onFlush)]
-#[AsDoctrineListener(Events::loadClassMetadata)]
+#[AsDoctrineListener(event: Events::onFlush)]
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
 final class SoftDeletableEventSubscriber
 {
     /**

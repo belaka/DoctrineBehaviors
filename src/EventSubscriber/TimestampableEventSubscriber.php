@@ -10,7 +10,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 
-#[AsDoctrineListener(Events::loadClassMetadata)]
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
 final class TimestampableEventSubscriber
 {
     public function __construct(

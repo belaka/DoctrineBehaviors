@@ -15,9 +15,9 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Knp\DoctrineBehaviors\Contract\Entity\SluggableInterface;
 use Knp\DoctrineBehaviors\Repository\DefaultSluggableRepository;
 
-#[AsDoctrineListener(Events::prePersist)]
-#[AsDoctrineListener(Events::preUpdate)]
-#[AsDoctrineListener(Events::loadClassMetadata)]
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::preUpdate)]
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
 final class SluggableEventSubscriber
 {
     /**

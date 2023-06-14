@@ -15,9 +15,9 @@ use Knp\DoctrineBehaviors\Contract\Entity\LoggableInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-#[AsDoctrineListener(Events::postPersist)]
-#[AsDoctrineListener(Events::postUpdate)]
-#[AsDoctrineListener(Events::preRemove)]
+#[AsDoctrineListener(event: Events::postPersist)]
+#[AsDoctrineListener(event: Events::postUpdate)]
+#[AsDoctrineListener(event: Events::preRemove)]
 final class LoggableEventSubscriber
 {
     public function __construct(

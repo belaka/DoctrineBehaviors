@@ -7,14 +7,15 @@ namespace Knp\DoctrineBehaviors\EventSubscriber;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Knp\DoctrineBehaviors\Contract\Entity\TreeNodeInterface;
 
-#[AsDoctrineListener(Events::loadClassMetadata)]
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
 final class TreeEventSubscriber
 {
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
     {
-        /** @var ClassMetadata $classMetadata */
+        /** @var ClassMetadataInfo $classMetadata */
         $classMetadata = $loadClassMetadataEventArgs->getClassMetadata();
         if ($classMetadata->reflClass === null) {
             // Class has not yet been fully built, ignore this event

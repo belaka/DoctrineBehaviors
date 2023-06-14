@@ -17,9 +17,9 @@ use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 use Knp\DoctrineBehaviors\Contract\Provider\LocaleProviderInterface;
 use ReflectionClass;
 
-#[AsDoctrineListener(Events::prePersist)]
-#[AsDoctrineListener(Events::postLoad)]
-#[AsDoctrineListener(Events::loadClassMetadata)]
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::postLoad)]
+#[AsDoctrineListener(event: Events::loadClassMetadata)]
 final class TranslatableEventSubscriber
 {
     /**
@@ -45,6 +45,7 @@ final class TranslatableEventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
     {
+        /** @var ClassMetadataInfo $classMetadata */
         $classMetadata = $loadClassMetadataEventArgs->getClassMetadata();
         if (! $classMetadata->reflClass instanceof ReflectionClass) {
             // Class has not yet been fully built, ignore this event
@@ -158,7 +159,7 @@ final class TranslatableEventSubscriber
 
     private function setLocales(LifecycleEventArgs $lifecycleEventArgs): void
     {
-        $entity = $lifecycleEventArgs->getEntity();
+        $entity = $lifecycleEventArgs->getObject();
         if (! $entity instanceof TranslatableInterface) {
             return;
         }
