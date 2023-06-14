@@ -22,7 +22,6 @@ use Knp\DoctrineBehaviors\Contract\Provider\UserProviderInterface;
 #[AsDoctrineListener(Events::loadClassMetadata)]
 final class BlameableEventSubscriber
 {
-
     /**
      * @var string
      */
@@ -138,8 +137,6 @@ final class BlameableEventSubscriber
         $this->getUnitOfWork()
             ->propertyChanged($entity, self::DELETED_BY, $oldDeletedBy, $user);
     }
-
-    
 
     private function mapEntity(ClassMetadataInfo $classMetadataInfo): void
     {

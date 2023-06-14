@@ -8,14 +8,13 @@ use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
-use Knp\DoctrineBehaviors\Contract\Entity\UuidableInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Knp\DoctrineBehaviors\Contract\Entity\UuidableInterface;
 
 #[AsDoctrineListener(Events::prePersist)]
 #[AsDoctrineListener(Events::loadClassMetadata)]
 final class UuidableEventSubscriber
 {
-
     public function loadClassMetadata(LoadClassMetadataEventArgs $loadClassMetadataEventArgs): void
     {
         /** @var ClassMetadata $classMetadata */
@@ -49,5 +48,4 @@ final class UuidableEventSubscriber
 
         $entity->generateUuid();
     }
-
 }
